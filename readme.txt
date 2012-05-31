@@ -2,7 +2,7 @@
 Tags: developpement
 Requires at least: 3.0.0
 Tested up to: 3.3.1
-Stable tag: 1.1
+Stable tag: 1.2
 
 
 == Description ==
@@ -20,3 +20,14 @@ Displays the name of the template used by the currently displayed page. Plugins 
 
 == Screenshots ==
 1. No setting : activate and it'done !
+
+== Changelog ==
+
+= 1.2 =
+* Add an admin panel to manage the position of the debug box
+
+= 1.1 =
+* Add css to fix z-index problem
+
+= 1.0 =
+* First version of the plugin.

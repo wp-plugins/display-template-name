@@ -2,7 +2,7 @@
 /*
 Plugin Name: Display Template Name
 Description: Displays the name of the template used by the currently displayed page. Plugins very useful for developing your blog.
-Version: 1.1
+Version: 1.2
 Author: Aurélien Chappard
 Author URI: http://www.deefuse.fr/
 License: GPL
@@ -10,10 +10,80 @@ Copyright: Aurélien Chappard
 */
 if( !class_exists( 'Display_template_name' ) ) {
 	class Display_template_name {
+		var $adminOptionsName = "DisplayTemplateNameAdminOptions";
+		
 		public function __construct() {
 			load_plugin_textdomain('display-template-name', false, basename(dirname(__FILE__)).'/lang' );
 			
 		}
+		
+		
+		//Returns an array of admin options
+		function getAdminOptions() {
+			$displayTemplateNameAdminOptions = array('position' => 'TL');
+			$devOptions = get_option($this->adminOptionsName); 
+			if (!empty($devOptions)) {
+				foreach ($devOptions as $key => $option)
+					$displayTemplateNameAdminOptions[$key] = $option;
+			}
+			update_option($this->adminOptionsName, $displayTemplateNameAdminOptions);
+			return $displayTemplateNameAdminOptions;
+		}
+
+		function init() {
+			$this->getAdminOptions();
+		}
+
+
+		//Prints out the admin page
+		function printAdminPage()
+		{
+			$devOptions = $this->getAdminOptions();
+			if (isset($_POST['update_displayTemplateNamePluginSettings']))
+			{
+				if (isset($_POST['news_position'])) {
+					$devOptions['position'] = $_POST['news_position'];
+				}
+				
+				update_option($this->adminOptionsName, $devOptions);
+	
+				?>
+					<div class="updated"><p><strong><?php _e("The position have been saved.", "display-template-name");?></strong></p></div>
+				<?php
+			} ?>
+			<div class=wrap>
+				<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
+					<h2>Display Template Name</h2>
+					<p><?php _e("Select the position of the debug box.", "display-template-name") ?></p>
+					<p>
+						<label for="displatTplName_TL">
+							<input type="radio" id="displatTplName_TL" name="news_position" value="TL" <?php if ($devOptions['position'] == "TL") { echo 'checked="checked"'; }?> />
+								<?php _e("Top left", "display-template-name") ?>
+						</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="displatTplName_TR">
+							<input type="radio" id="displatTplName_TR" name="news_position" value="TR" <?php if ($devOptions['position'] == "TR") {echo 'checked="checked"'; }?>/>
+								<?php _e("Top right", "display-template-name") ?>
+						</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="displatTplName_BL">
+							<input type="radio" id="displatTplName_BL" name="news_position" value="BL" <?php if ($devOptions['position'] == "BL") {echo 'checked="checked"'; }?>/>
+								<?php _e("Bottom left", "display-template-name") ?>
+						</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="displatTplName_BR">
+							<input type="radio" id="displatTplName_BR" name="news_position" value="BR" <?php if ($devOptions['position'] == "BR") {echo 'checked="checked"'; }?>/>
+								<?php _e("Bottom right", "display-template-name") ?>
+						</label>
+					</p>
+					<div class="submit">
+						<input type="submit" class="button-primary" name="update_displayTemplateNamePluginSettings" value="<?php _e('Update Settings', 'display-template-name') ?>" />
+					</div>
+				</form>
+			</div>
+			<?php
+		}//End function printAdminPage()
+
 		
 		/**
 		* Display the name on the top of the pages
@@ -24,11 +94,32 @@ if( !class_exists( 'Display_template_name' ) ) {
 			$actualUser =  wp_get_current_user();
 			if($actualUser->data != null)
 			{
+				//
+				$devOptions = $this->getAdminOptions();
+				
 				// Css position according to the showing admin bar
 				$top = ( is_admin_bar_showing() ? "29px" : "0px" );
+				switch ($devOptions['position'])
+				{
+					
+					case 'BL' :
+						$stringCss = 'bottom:0px; left:0px;';
+						break;
+					case 'BR' :
+						$stringCss = 'bottom:0px; right:0px;';
+						break;
+					case 'TR' :
+						$stringCss = 'top:' . $top . '; right:0px;';
+						break;
+					case 'TL' :
+					default :
+						$stringCss = 'top:' . $top . '; left:0px;';
+						break;
+				}
+				
 				?>
 					<style type="text/css">
-						#debug-display-template-name{font-size: 14px; position: fixed; top: <?php echo $top;?>; left: 0px; background: #000; color: #FFF; padding: 5px; border: 1px solid #FFF; -moz-box-shadow: 5px 5px 5px 0px #CCCCCC;-webkit-box-shadow: 5px 5px 5px 0px #CCCCCC;-o-box-shadow: 5px 5px 5px 0px #CCCCCC;box-shadow: 5px 5px 5px 0px #CCCCCC;z-index: 99999}
+						#debug-display-template-name{font-size: 14px; position: fixed; <?php echo $stringCss;?> background: #000; color: #FFF; padding: 5px 7px; border: 1px solid #FFF;z-index: 99999}
 					</style>
 					 <div id="debug-display-template-name"><?php _e('Current template:','display-template-name'); ?> <?php echo $this->get_current_template();?></div>
 				<?php
@@ -38,6 +129,7 @@ if( !class_exists( 'Display_template_name' ) ) {
 				echo "prout";
 			}
 		}
+		
 		
 		/**
 		* Retrieve the current template name et save into a global variable current_theme_template
@@ -73,9 +165,26 @@ if (class_exists("Display_template_name")) {
 //Actions and Filters	
 if (isset($display_template_name_plugin))
 {
+	register_activation_hook( __FILE__, array(&$display_template_name_plugin, 'init') );
+	
+	
 	//Actions
 	add_action( 'wp_footer', array(&$display_template_name_plugin, 'displayTheTemplateName') );
+	add_action('admin_menu', 'DisplaYTemplateName_ap');
 	
 	// Filter
 	add_filter( 'template_include', array(&$display_template_name_plugin,'var_template_include'), 1000 );
+}
+
+//Initialize the admin panel
+if (!function_exists("DisplaYTemplateName_ap")) {
+	function DisplaYTemplateName_ap() {
+		global $display_template_name_plugin;
+		if (!isset($display_template_name_plugin)) {
+			return;
+		}
+		if (function_exists('add_options_page')) {
+			add_options_page('Display Template Name', 'Display Template Name', 9, basename(__FILE__), array(&$display_template_name_plugin, 'printAdminPage'));
+		}
+	}	
 }

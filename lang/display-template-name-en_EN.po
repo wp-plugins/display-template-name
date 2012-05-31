@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: display-template-name\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-25 17:59+0100\n"
-"PO-Revision-Date: 2012-05-25 17:59+0100\n"
+"POT-Creation-Date: 2012-05-31 22:21+0100\n"
+"PO-Revision-Date: 2012-05-31 22:27+0100\n"
 "Last-Translator: Chap <nanao@yopmail.com>\n"
 "Language-Team: Aurelien Chappard <aucha@deefuse.fr>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,35 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name\n"
 
-#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:30
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:51
+msgid "The position have been saved."
+msgstr "The position have been saved."
+
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:59
+msgid "Select the position of the debug box."
+msgstr "Select the position of the debug box in your website :"
+
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:63
+msgid "Top left"
+msgstr "Top left"
+
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:68
+msgid "Top right"
+msgstr "Top right"
+
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:73
+msgid "Bottom left"
+msgstr "Bottom left"
+
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:78
+msgid "Bottom right"
+msgstr "Bottom right"
+
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:82
+msgid "Update Settings"
+msgstr "Update Settings"
+
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:126
 msgid "Current template:"
 msgstr "Current template:"
 
