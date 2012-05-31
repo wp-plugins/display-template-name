@@ -2,7 +2,7 @@
 /*
 Plugin Name: Display Template Name
 Description: Displays the name of the template used by the currently displayed page. Plugins very useful for developing your blog.
-Version: 1.0
+Version: 1.1
 Author: Aurélien Chappard
 Author URI: http://www.deefuse.fr/
 License: GPL
@@ -28,7 +28,7 @@ if( !class_exists( 'Display_template_name' ) ) {
 				$top = ( is_admin_bar_showing() ? "29px" : "0px" );
 				?>
 					<style type="text/css">
-						#debug-display-template-name{font-size: 14px; position: fixed; top: <?php echo $top;?>; left: 0px; background: #000; color: #FFF; padding: 5px; border: 1px solid #FFF; -moz-box-shadow: 5px 5px 5px 0px #CCCCCC;-webkit-box-shadow: 5px 5px 5px 0px #CCCCCC;-o-box-shadow: 5px 5px 5px 0px #CCCCCC;box-shadow: 5px 5px 5px 0px #CCCCCC;}
+						#debug-display-template-name{font-size: 14px; position: fixed; top: <?php echo $top;?>; left: 0px; background: #000; color: #FFF; padding: 5px; border: 1px solid #FFF; -moz-box-shadow: 5px 5px 5px 0px #CCCCCC;-webkit-box-shadow: 5px 5px 5px 0px #CCCCCC;-o-box-shadow: 5px 5px 5px 0px #CCCCCC;box-shadow: 5px 5px 5px 0px #CCCCCC;z-index: 99999}
 					</style>
 					 <div id="debug-display-template-name"><?php _e('Current template:','display-template-name'); ?> <?php echo $this->get_current_template();?></div>
 				<?php
