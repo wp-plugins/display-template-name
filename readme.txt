@@ -2,7 +2,7 @@
 Tags: developpement
 Requires at least: 3.0.0
 Tested up to: 3.3.1
-Stable tag: 1.2
+Stable tag: 1.2.1
 
 
 == Description ==
@@ -22,6 +22,9 @@ Displays the name of the template used by the currently displayed page. Plugins 
 1. No setting : activate and it'done !
 
 == Changelog ==
+
+= 1.2.1 =
+* Add an  uninstall file in order to delete options saved in the database
 
 = 1.2 =
 * Add an admin panel to manage the position of the debug box
