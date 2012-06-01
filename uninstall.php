@@ -2,5 +2,5 @@
 if( !defined( 'ABSPATH') && !defined('WP_UNINSTALL_PLUGIN') )
     exit();
 
-var $adminOptionsName = "DisplayTemplateNameAdminOptions";
+$adminOptionsName = "DisplayTemplateNameAdminOptions";
 delete_option($adminOptionsName);
