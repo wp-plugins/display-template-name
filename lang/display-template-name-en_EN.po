@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: display-template-name\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-31 22:21+0100\n"
-"PO-Revision-Date: 2012-05-31 22:27+0100\n"
+"POT-Creation-Date: 2012-06-01 10:02+0100\n"
+"PO-Revision-Date: 2012-06-01 10:02+0100\n"
 "Last-Translator: Chap <nanao@yopmail.com>\n"
 "Language-Team: Aurelien Chappard <aucha@deefuse.fr>\n"
 "MIME-Version: 1.0\n"
@@ -20,33 +20,37 @@ msgstr ""
 msgid "The position have been saved."
 msgstr "The position have been saved."
 
-#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:59
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:57
 msgid "Select the position of the debug box."
 msgstr "Select the position of the debug box in your website :"
 
-#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:63
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:61
 msgid "Top left"
 msgstr "Top left"
 
-#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:68
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:66
 msgid "Top right"
 msgstr "Top right"
 
-#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:73
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:71
 msgid "Bottom left"
 msgstr "Bottom left"
 
-#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:78
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:76
 msgid "Bottom right"
 msgstr "Bottom right"
 
-#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:82
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:80
 msgid "Update Settings"
 msgstr "Update Settings"
 
-#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:126
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:124
 msgid "Current template:"
 msgstr "Current template:"
+
+#: /Users/aurelienchappard/Documents/Laboratoires/CMS/wordpress-3.3.1/wp-content/plugins/display-template-name/display-template-name.php:159
+msgid "Settings"
+msgstr "Settings"
 
 #~ msgid "String name"
 #~ msgstr "Nom de la chaine"

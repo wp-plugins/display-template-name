@@ -153,6 +153,13 @@ if( !class_exists( 'Display_template_name' ) ) {
 		    else
 		        return $GLOBALS['current_theme_template'];
 		}
+		
+		function dispayTplName_settings_link($links)
+		{
+			$settings_link = '<a href="options-general.php?page=display-template-name.php">' . __('Settings', 'display-template-name') . '</a>'; 
+			array_unshift($links, $settings_link); 
+			return $links;
+		}
 
 	}
 }
@@ -174,6 +181,9 @@ if (isset($display_template_name_plugin))
 	
 	// Filter
 	add_filter( 'template_include', array(&$display_template_name_plugin,'var_template_include'), 1000 );
+	
+	$plugin = plugin_basename(__FILE__); 
+	add_filter("plugin_action_links_$plugin", array(&$display_template_name_plugin,'dispayTplName_settings_link') );
 }
 
 //Initialize the admin panel
