@@ -34,7 +34,12 @@ if( !class_exists( 'Display_template_name' ) ) {
 			$this->getAdminOptions();
 		}
 
-
+		function kill()
+		{
+			delete_option($this->adminOptionsName);
+		}
+		
+		
 		//Prints out the admin page
 		function printAdminPage()
 		{
@@ -173,6 +178,7 @@ if (class_exists("Display_template_name")) {
 if (isset($display_template_name_plugin))
 {
 	register_activation_hook( __FILE__, array(&$display_template_name_plugin, 'init') );
+	register_uninstall_hook( __FILE__, array(&$display_template_name_plugin, 'kill') );
 	
 	
 	//Actions
