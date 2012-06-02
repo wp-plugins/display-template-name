@@ -2,7 +2,7 @@
 /*
 Plugin Name: Display Template Name
 Description: Displays the name of the template used by the currently displayed page. Plugins very useful for developing your blog.
-Version: 1.2.1
+Version: 1.2.2
 Author: Aurélien Chappard
 Author URI: http://www.deefuse.fr/
 License: GPL
@@ -35,6 +35,11 @@ if( !class_exists( 'Display_template_name' ) ) {
 		}
 
 		
+		function displayTplNameenqueue_my_styles()
+		{
+			wp_register_style( 'displayTPLNameStylesheet', plugins_url('stylesheet.css', __FILE__) );
+			wp_enqueue_style( 'displayTPLNameStylesheet' );
+		}
 		
 		
 		//Prints out the admin page
@@ -56,28 +61,60 @@ if( !class_exists( 'Display_template_name' ) ) {
 			<div class=wrap>
 				<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 					<h2>Display Template Name</h2>
+					<?php
+						$template = get_template();
+						$template_dir = get_theme_root() . "/$template";
+						$filtre = apply_filters('template_directory', $template_dir, $template);
+						$pathScreenShot = $filtre."/screenshot.png";
+						
+						$urlScreenShot = plugin_dir_url(__FILE__) . 'images/default.png';
+						
+						
+						if( file_exists($pathScreenShot) )
+						{
+							$urlScreenShot = get_bloginfo('template_directory') . '/screenshot.png';
+						}
+					?>
 					<p><?php _e("Select the position of the debug box.", "display-template-name") ?></p>
-					<p>
+					<div id="tablePreviewDisplayTplName">
+						
 						<label for="displatTplName_TL">
+							<div class="macPreviewDebug">
+								<img src="<?php echo $urlScreenShot;?>" width="201" class="preview" height="150"/>
+								<img src="<?php echo plugin_dir_url(__FILE__) . 'images/masque_tl.png';?>" class="maskDisplayTpl" />
+							</div>
 							<input type="radio" id="displatTplName_TL" name="news_position" value="TL" <?php if ($devOptions['position'] == "TL") { echo 'checked="checked"'; }?> />
-								<?php _e("Top left", "display-template-name") ?>
+							<?php _e("Top left", "display-template-name") ?>
 						</label>
-						&nbsp;&nbsp;&nbsp;&nbsp;
+					
 						<label for="displatTplName_TR">
+							<div class="macPreviewDebug">
+								<img src="<?php echo $urlScreenShot;?>" width="201" class="preview" height="150"/>
+								<img src="<?php echo plugin_dir_url(__FILE__) . 'images/masque_tr.png';?>" class="maskDisplayTpl" />
+							</div>
 							<input type="radio" id="displatTplName_TR" name="news_position" value="TR" <?php if ($devOptions['position'] == "TR") {echo 'checked="checked"'; }?>/>
 								<?php _e("Top right", "display-template-name") ?>
 						</label>
-						&nbsp;&nbsp;&nbsp;&nbsp;
+					
 						<label for="displatTplName_BL">
+							<div class="macPreviewDebug">
+								<img src="<?php echo $urlScreenShot;?>" width="201" class="preview" height="150"/>
+								<img src="<?php echo plugin_dir_url(__FILE__) . 'images/masque_bl.png';?>" class="maskDisplayTpl" />
+							</div>
 							<input type="radio" id="displatTplName_BL" name="news_position" value="BL" <?php if ($devOptions['position'] == "BL") {echo 'checked="checked"'; }?>/>
 								<?php _e("Bottom left", "display-template-name") ?>
 						</label>
-						&nbsp;&nbsp;&nbsp;&nbsp;
+					
 						<label for="displatTplName_BR">
+							<div class="macPreviewDebug">
+								<img src="<?php echo $urlScreenShot;?>" width="201" class="preview" height="150"/>
+								<img src="<?php echo plugin_dir_url(__FILE__) . 'images/masque_br.png';?>" class="maskDisplayTpl" />
+							</div>
 							<input type="radio" id="displatTplName_BR" name="news_position" value="BR" <?php if ($devOptions['position'] == "BR") {echo 'checked="checked"'; }?>/>
-								<?php _e("Bottom right", "display-template-name") ?>
+							<?php _e("Bottom right", "display-template-name") ?>
 						</label>
-					</p>
+					</div>
+					<div class="clearBoth"></div>
 					<div class="submit">
 						<input type="submit" class="button-primary" name="update_displayTemplateNamePluginSettings" value="<?php _e('Update Settings', 'display-template-name') ?>" />
 					</div>
@@ -180,7 +217,7 @@ if (isset($display_template_name_plugin))
 	//Actions
 	add_action( 'wp_footer', array(&$display_template_name_plugin, 'displayTheTemplateName') );
 	add_action('admin_menu', 'DisplaYTemplateName_ap');
-	
+	add_action( 'admin_init', array(&$display_template_name_plugin, 'displayTplNameenqueue_my_styles') );
 	// Filter
 	add_filter( 'template_include', array(&$display_template_name_plugin,'var_template_include'), 1000 );
 	

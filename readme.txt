@@ -1,8 +1,8 @@
 === Display Template Name ===
-Tags: developpement
+Tags: developpement, template
 Requires at least: 3.0.0
 Tested up to: 3.3.1
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 
 
 == Description ==
@@ -19,9 +19,13 @@ Displays the name of the template used by the currently displayed page. Plugins 
 
 
 == Screenshots ==
-1. No setting : activate and it'done !
+1. Area display debug.
+2. Page display customization
 
 == Changelog ==
+
+= 1.2.2 =
+* Improved GUI for customizing the display of debug area
 
 = 1.2.1 =
 * Add an  uninstall file in order to delete options saved in the database
