@@ -62,17 +62,16 @@ if( !class_exists( 'Display_template_name' ) ) {
 				<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 					<h2>Display Template Name</h2>
 					<?php
-						$template = get_template();
-						$template_dir = get_theme_root() . "/$template";
-						$filtre = apply_filters('template_directory', $template_dir, $template);
-						$pathScreenShot = $filtre."/screenshot.png";
-						
+						$themes = get_themes();
+						$current_theme = get_current_theme();
+						$screenshotIMG = $themes[$current_theme]['Screenshot'];
+																		
 						$urlScreenShot = plugin_dir_url(__FILE__) . 'images/default.png';
 						
 						
-						if( file_exists($pathScreenShot) )
+						if( $screenshotIMG != '' )
 						{
-							$urlScreenShot = get_bloginfo('template_directory') . '/screenshot.png';
+							$urlScreenShot = get_bloginfo('template_directory') . '/' . $screenshotIMG;
 						}
 					?>
 					<p><?php _e("Select the position of the debug box.", "display-template-name") ?></p>
