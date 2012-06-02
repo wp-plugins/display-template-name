@@ -2,7 +2,7 @@
 Tags: developpement, template
 Requires at least: 3.0.0
 Tested up to: 3.3.1
-Stable tag: 1.2.2.1
+Stable tag: 1.2.2.2
 
 
 == Description ==
@@ -23,6 +23,9 @@ Displays the name of the template used by the currently displayed page. Plugins 
 2. Page display customization
 
 == Changelog ==
+
+= 1.2.2.2 =
+* Code optimization
 
 = 1.2.2.1 =
 * Fix bug for retrieving screenshoot theme image
