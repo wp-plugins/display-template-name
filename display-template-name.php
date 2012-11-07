@@ -2,7 +2,7 @@
 /*
 Plugin Name: Display Template Name
 Description: Displays the name of the template used by the currently displayed page. Plugins very useful for developing your blog.
-Version: 1.2.2.2
+Version: 1.3
 Author: Aurélien Chappard
 Author URI: http://www.deefuse.fr/
 License: GPL
@@ -158,8 +158,15 @@ if( !class_exists( 'Display_template_name' ) ) {
 				?>
 					<style type="text/css">
 						#debug-display-template-name{font-size: 14px; position: fixed; <?php echo $stringCss;?> background: #000; color: #FFF; padding: 5px 7px; border: 1px solid #FFF;z-index: 99999}
+						#debug-display-template-name a, #debug-display-template-name a:visited{
+							color: #FFF;
+							
+						}
 					</style>
-					 <div id="debug-display-template-name"><?php _e('Current template:','display-template-name'); ?> <?php echo $this->get_current_template();?></div>
+					<?php 
+						$templateInfos = $this->get_current_template();
+					?>
+					 <div id="debug-display-template-name"><?php _e('Current template:','display-template-name'); ?> <a href="#" title="<?php echo $templateInfos; ?>" target="_blank"><?php echo basename($templateInfos); ?></a></div>
 				<?php
 			}
 		}
@@ -171,7 +178,8 @@ if( !class_exists( 'Display_template_name' ) ) {
 
 		function var_template_include( $t )
 		{
-		    $GLOBALS['current_theme_template'] = basename($t);
+		 //   $GLOBALS['current_theme_template'] = basename($t);
+		    $GLOBALS['current_theme_template'] = $t;
 		    return $t;
 		}
 		
