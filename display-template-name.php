@@ -2,7 +2,7 @@
 /*
 Plugin Name: Display Template Name
 Description: Displays the name of the template used by the currently displayed page. Plugins very useful for developing your blog.
-Version: 1.3
+Version: 1.3.1
 Author: Aurélien Chappard
 Author URI: http://www.deefuse.fr/
 License: GPL
@@ -160,6 +160,7 @@ if( !class_exists( 'Display_template_name' ) ) {
 						#debug-display-template-name{font-size: 14px; position: fixed; <?php echo $stringCss;?> background: #000; color: #FFF; padding: 5px 7px; border: 1px solid #FFF;z-index: 99999}
 						#debug-display-template-name a, #debug-display-template-name a:visited{
 							color: #FFF;
+							cursor: default;
 							
 						}
 					</style>
