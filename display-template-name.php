@@ -2,7 +2,7 @@
 /*
 Plugin Name: Display Template Name
 Description: Displays the name of the template used by the currently displayed page. Plugins very useful for developing your blog.
-Version: 1.3.1
+Version: 1.4
 Author: Aurélien Chappard
 Author URI: http://www.deefuse.fr/
 License: GPL
@@ -114,6 +114,9 @@ if( !class_exists( 'Display_template_name' ) ) {
 						</label>
 					</div>
 					<div class="clearBoth"></div>
+					<p><em>
+							<?php _e("If the toolbar is displayed when you visit the site, the template name will be displayed in it and the above parameter will not be considered.", "display-template-name") ?>
+						</em></p>
 					<div class="submit">
 						<input type="submit" class="button-primary" name="update_displayTemplateNamePluginSettings" value="<?php _e('Update Settings', 'display-template-name') ?>" />
 					</div>
@@ -136,39 +139,62 @@ if( !class_exists( 'Display_template_name' ) ) {
 				$devOptions = $this->getAdminOptions();
 				
 				// Css position according to the showing admin bar
-				$top = ( is_admin_bar_showing() ? "29px" : "0px" );
-				switch ($devOptions['position'])
+				if(!is_admin_bar_showing())
 				{
-					
-					case 'BL' :
-						$stringCss = 'bottom:0px; left:0px;';
-						break;
-					case 'BR' :
-						$stringCss = 'bottom:0px; right:0px;';
-						break;
-					case 'TR' :
-						$stringCss = 'top:' . $top . '; right:0px;';
-						break;
-					case 'TL' :
-					default :
-						$stringCss = 'top:' . $top . '; left:0px;';
-						break;
-				}
-				
+					$top = "0px";
+					switch ($devOptions['position'])
+					{
+
+						case 'BL' :
+							$stringCss = 'bottom:0px; left:0px;';
+							break;
+						case 'BR' :
+							$stringCss = 'bottom:0px; right:0px;';
+							break;
+						case 'TR' :
+							$stringCss = 'top:' . $top . '; right:0px;';
+							break;
+						case 'TL' :
+						default :
+							$stringCss = 'top:' . $top . '; left:0px;';
+							break;
+					}	
 				?>
 					<style type="text/css">
-						#debug-display-template-name{font-size: 14px; position: fixed; <?php echo $stringCss;?> background: #000; color: #FFF; padding: 5px 7px; border: 1px solid #FFF;z-index: 99999}
+						#debug-display-template-name{font-size: 14px;cursor: default; position: fixed; <?php echo $stringCss;?> background: #000; color: #FFF; padding: 5px 7px; border: 1px solid #FFF;z-index: 99999}
 						#debug-display-template-name a, #debug-display-template-name a:visited{
 							color: #FFF;
 							cursor: default;
-							
 						}
+						#debug-display-template-name p{margin-bottom:10px;}
+						#debug-display-template-name ul{
+							list-style-type:disc;
+							padding-left:10px;
+							line-height:17px;
+							list-style-position:inside;
+						}
+						#debug-display-template-name ul li{
+							margin-bottom:10px;
+						}
+						#debug-display-template-name ul li  ul{
+							list-style-type:square;
+							padding-left:15px;
+						}
+						#debug-display-template-name ul li  ul li{margin-bottom:inherit;}
 					</style>
 					<?php 
 						$templateInfos = $this->get_current_template();
 					?>
-					 <div id="debug-display-template-name"><?php _e('Current template:','display-template-name'); ?> <a href="#" title="<?php echo $templateInfos; ?>" target="_blank"><?php echo basename($templateInfos); ?></a></div>
+					<div id="debug-display-template-name">
+						<p><?php _e('Current template:','display-template-name'); ?></p>
+						<ul>
+							<li>
+								<a href="#" title="<?php echo $templateInfos; ?>" target="_blank"><?php echo basename($templateInfos); ?></a>
+							</li>
+						</ul>
+					</div>
 				<?php
+				}
 			}
 		}
 		
@@ -181,6 +207,7 @@ if( !class_exists( 'Display_template_name' ) ) {
 		{
 		 //   $GLOBALS['current_theme_template'] = basename($t);
 		    $GLOBALS['current_theme_template'] = $t;
+			
 		    return $t;
 		}
 		
@@ -197,13 +224,32 @@ if( !class_exists( 'Display_template_name' ) ) {
 		        return $GLOBALS['current_theme_template'];
 		}
 		
+		
+		
+		function get_header_Action($args){
+			print_r($args);
+		}
 		function dispayTplName_settings_link($links)
 		{
 			$settings_link = '<a href="options-general.php?page=display-template-name.php">' . __('Settings', 'display-template-name') . '</a>'; 
 			array_unshift($links, $settings_link); 
 			return $links;
 		}
-
+		
+		function displayTplNameAdminBar()
+		{
+			if(!is_admin() && is_admin_bar_showing()){
+				global $wp_admin_bar;
+				$templateInfos = $this->get_current_template();
+				$wp_admin_bar->add_menu( array(
+					'parent' => false, // use 'false' for a root menu, or pass the ID of the parent menu
+					'id' => 'displayTemplateName', // link ID, defaults to a sanitized title value
+					'title' => __('Current template:','display-template-name') .' <b>'. basename($templateInfos) .'</b>', // link title
+					'meta' => array('title' => $templateInfos) // array of any of the following options: array( 'html' => '', 'class' => '', 'onclick' => '', target => '', title => '' );
+				));	
+			}
+			
+		}
 	}
 }
 
@@ -222,11 +268,14 @@ if (isset($display_template_name_plugin))
 	add_action( 'wp_footer', array(&$display_template_name_plugin, 'displayTheTemplateName') );
 	add_action('admin_menu', 'DisplaYTemplateName_ap');
 	add_action( 'admin_init', array(&$display_template_name_plugin, 'displayTplNameenqueue_my_styles') );
+	add_action( 'wp_before_admin_bar_render', array(&$display_template_name_plugin, 'displayTplNameAdminBar') );
 	// Filter
 	add_filter( 'template_include', array(&$display_template_name_plugin,'var_template_include'), 1000 );
 	
 	$plugin = plugin_basename(__FILE__); 
 	add_filter("plugin_action_links_$plugin", array(&$display_template_name_plugin,'dispayTplName_settings_link') );
+	
+	
 }
 
 //Initialize the admin panel
