@@ -2,7 +2,7 @@
 /*
 Plugin Name: Display Template Name
 Description: Displays the name of the template used by the currently displayed page. Plugins very useful for developing your blog.
-Version: 1.4
+Version: 1.5
 Author: Aurélien Chappard
 Author URI: http://www.deefuse.fr/
 License: GPL
@@ -62,16 +62,12 @@ if( !class_exists( 'Display_template_name' ) ) {
 				<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
 					<h2>Display Template Name</h2>
 					<?php
-						$themes = get_themes();
-						$current_theme = get_current_theme();
-						$screenshotIMG = $themes[$current_theme]['Screenshot'];
-																		
-						$urlScreenShot = plugin_dir_url(__FILE__) . 'images/default.png';
-						
-						
-						if( $screenshotIMG != '' )
+						$themes = wp_get_theme();
+                        
+                        $urlScreenShot = $themes->get_screenshot();
+                        if( empty($urlScreenShot) )
 						{
-							$urlScreenShot = get_bloginfo('template_directory') . '/' . $screenshotIMG;
+							$urlScreenShot = plugin_dir_url(__FILE__) . 'images/default.png';
 						}
 					?>
 					<p><?php _e("Select the position of the debug box.", "display-template-name") ?></p>
@@ -286,7 +282,7 @@ if (!function_exists("DisplaYTemplateName_ap")) {
 			return;
 		}
 		if (function_exists('add_options_page')) {
-			add_options_page('Display Template Name', 'Display Template Name', 9, basename(__FILE__), array(&$display_template_name_plugin, 'printAdminPage'));
+			add_options_page('Display Template Name', 'Display Template Name', 'activate_plugins', basename(__FILE__), array(&$display_template_name_plugin, 'printAdminPage'));
 		}
 	}	
 }

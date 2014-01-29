@@ -1,8 +1,8 @@
 === Display Template Name ===
 Tags: developpement, template
 Requires at least: 3.0.0
-Tested up to: 3.5
-Stable tag: 1.4
+Tested up to: 3.8
+Stable tag: 1.5
 
 
 == Description ==
@@ -23,6 +23,9 @@ Displays the name of the template used by the currently displayed page. Plugins 
 2. Page display customization
 
 == Changelog ==
+
+= 1.5 =
+* Wordpress 3.8 compatibility
 
 = 1.4 =
 * Display the template name in the admin bar when it's used.
