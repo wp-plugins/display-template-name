@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Display Template Name
-Description: Displays the name of the template used by the currently displayed page. Plugins very useful for developing your blog.
+Description: Displays the name of the template used by the currently displayed page in the admin bar or inside the pages. Plugins very useful for developing your blog.
 Version: 1.5
 Author: Aurélien Chappard
 Author URI: http://www.deefuse.fr/
@@ -31,6 +31,11 @@ if( !class_exists( 'Display_template_name' ) ) {
 		}
 
 		function init() {
+    		// add special cap
+            $admin_role = get_role("administrator");
+            $admin_role->add_cap( 'view_template_name' );
+            
+            //get option 
 			$this->getAdminOptions();
 		}
 
@@ -135,7 +140,7 @@ if( !class_exists( 'Display_template_name' ) ) {
 				$devOptions = $this->getAdminOptions();
 				
 				// Css position according to the showing admin bar
-				if(!is_admin_bar_showing())
+				if( !is_admin_bar_showing() && current_user_can('view_template_name') )
 				{
 					$top = "0px";
 					switch ($devOptions['position'])
@@ -234,7 +239,7 @@ if( !class_exists( 'Display_template_name' ) ) {
 		
 		function displayTplNameAdminBar()
 		{
-			if(!is_admin() && is_admin_bar_showing()){
+			if(!is_admin() && is_admin_bar_showing() && current_user_can('view_template_name') ){
 				global $wp_admin_bar;
 				$templateInfos = $this->get_current_template();
 				$wp_admin_bar->add_menu( array(
