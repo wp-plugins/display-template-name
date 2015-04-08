@@ -3,7 +3,7 @@
 Plugin Name: Display Template Name
 Description: Displays the name of the template used by the currently displayed page in the admin bar or inside the pages. Plugins very useful for developing your blog.
 Version: 1.6
-Author: Aurelien Chappard
+Author: Aurélien Chappard
 Author URI: http://www.deefuse.fr/
 License: GPL
 Copyright: Aurélien Chappard
