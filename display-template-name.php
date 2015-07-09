@@ -2,7 +2,7 @@
 /*
 Plugin Name: Display Template Name
 Description: Displays the name of the template used by the currently displayed page in the admin bar or inside the pages. Plugins very useful for developing your blog.
-Version: 1.6
+Version: 1.7
 Author: Aurélien Chappard
 Author URI: http://www.deefuse.fr/
 License: GPL
@@ -162,7 +162,24 @@ if( !class_exists( 'Display_template_name' ) ) {
 					}	
 				?>
 					<style type="text/css">
-						#debug-display-template-name{font-size: 14px;cursor: default; position: fixed; <?php echo $stringCss;?> background: #000; color: #FFF; padding: 5px 7px; border: 1px solid #FFF;z-index: 99999}
+						#debug-display-template-name{
+                            font-size: 14px;
+                            cursor: default;
+                            position: fixed;
+                            <?php echo $stringCss;?>
+                            background: #333;
+                            color: #FFF;
+                            padding: 5px 20px;
+                            border: 1px solid #FFF;
+                            z-index: 99999
+                        }
+                        #debug-display-template-name h6{
+                            font-size: 18px;
+                            text-transform: uppercase;
+                            font-weight: normal;
+                            padding-bottom: 10px;
+                            border-bottom:1px solid #000;
+                        }
 						#debug-display-template-name a, #debug-display-template-name a:visited{
 							color: #FFF;
 							cursor: default;
@@ -185,12 +202,20 @@ if( !class_exists( 'Display_template_name' ) ) {
 					</style>
 					<?php 
 						$templateInfos = $this->get_current_template();
+                        $child_template = $this->get_child_templates($templateInfos);
 					?>
 					<div id="debug-display-template-name">
-						<p><?php _e('Current template:','display-template-name'); ?></p>
+						<h6><?php _e('Current template:','display-template-name'); ?></h6>
 						<ul>
 							<li>
 								<a href="#" title="<?php echo $templateInfos; ?>" target="_blank"><?php echo basename($templateInfos); ?></a>
+                                <?php if ( count($child_template > 0) ) : ?>
+                                <ul>
+                                    <?php foreach ($child_template as $tpl) : ?>
+                                        <li><a title="<?php echo $tpl; ?>"><?php echo basename($tpl); ?></a></li>
+                                    <?php endforeach ?>
+                                </ul>
+                                <?php endif; ?>
 							</li>
 						</ul>
 					</div>
@@ -224,31 +249,95 @@ if( !class_exists( 'Display_template_name' ) ) {
 		    else
 		        return $GLOBALS['current_theme_template'];
 		}
-		
-		
-		
-		function get_header_Action($args){
-			print_r($args);
-		}
+
+        /**
+         * Récupère les tpl enfant chargé après le template principal (vie get_template_part)
+         * @param $baseTemplateCalled
+         * @return array
+         */
+        function get_child_templates($baseTemplateCalled){
+            $child_include = array();
+            $included_files = get_included_files();
+            $stylesheet_dir = str_replace( '\\', '/', get_stylesheet_directory() );
+            $template_dir   = str_replace( '\\', '/', get_template_directory() );
+            $template_de_base_loaded = FALSE;
+            foreach ( $included_files as $key => $path ) {
+
+                $path   = str_replace( '\\', '/', $path );
+
+                if ( false === strpos( $path, $stylesheet_dir ) && false === strpos( $path, $template_dir ) )
+                    unset( $included_files[$key] );
+
+                // si c'est dans le theme
+                if(!strpos($path, '/wp-content/themes/') === false) {
+
+                    if($template_de_base_loaded){
+                        array_push($child_include, $path);
+                    }
+
+                    if($path == $baseTemplateCalled){
+                        $template_de_base_loaded = TRUE;
+                    }
+
+
+                    //array_push($child_include, $path. ' = '.$baseTemplateCalled);
+                    //echo $key.' = '. $path.'</br></br>';
+
+                }
+            }
+            return $child_include;
+        }
+
 		function dispayTplName_settings_link($links)
 		{
 			$settings_link = '<a href="options-general.php?page=display-template-name.php">' . __('Settings', 'display-template-name') . '</a>'; 
 			array_unshift($links, $settings_link); 
 			return $links;
 		}
-		
+
+        function custom_css_admin_bar(){
+            echo '<style>
+                    #wp-admin-bar-displayTemplateName .ab-icon:before{
+                        font-family: "dashicons" !important;
+                        content: "\f100" !important;
+                    }
+
+                    #wp-admin-bar-displayTemplateName .ab-icon-child:before{
+                        font-family: "dashicons" !important;
+                        content: "\f345" !important;
+                    }
+                    </style>';
+        }
+
 		function displayTplNameAdminBar()
 		{
 			if(!is_admin() && is_admin_bar_showing() && current_user_can('view_template_name') ){
 				global $wp_admin_bar;
 				$templateInfos = $this->get_current_template();
-				$wp_admin_bar->add_menu( array(
-					'parent' => false, // use 'false' for a root menu, or pass the ID of the parent menu
-					'id' => 'displayTemplateName', // link ID, defaults to a sanitized title value
-					'title' => __('Current template:','display-template-name') .' <b>'. basename($templateInfos) .'</b>', // link title
-					'meta' => array('title' => $templateInfos) // array of any of the following options: array( 'html' => '', 'class' => '', 'onclick' => '', target => '', title => '' );
-				));	
-			}
+                $child_template = $this->get_child_templates($templateInfos);
+                $wp_admin_bar->add_menu( array(
+                    'parent' => false, // use 'false' for a root menu, or pass the ID of the parent menu
+                    'id' => 'displayTemplateName', // link ID, defaults to a sanitized title value
+                    'title' => '<span class="ab-icon"></span> '.__('Current template:','display-template-name') .' <b>'. basename($templateInfos) .'</b>', // link title
+                    'meta' => array('title' => $templateInfos) // array of any of the following options: array( 'html' => '', 'class' => '', 'onclick' => '', target => '', title => '' );
+                ));
+                if ( count($child_template > 0) ) {
+                    $i = 0;
+                    foreach ($child_template as $tpl) {
+                        $wp_admin_bar->add_menu( array(
+                            'parent' => 'displayTemplateName', // use 'false' for a root menu, or pass the ID of the parent menu
+                            'id' => 'displayTemplateName-child-'.$i, // link ID, defaults to a sanitized title value
+                            'title' => '<span class="ab-icon-child"></span> '. basename($tpl),
+                            'meta' => array('title' => $tpl) // array of any of the following options: array( 'html' => '', 'class' => '', 'onclick' => '', target => '', title => '' );
+                        ));
+                        $i++;
+                    }
+                }
+
+
+
+
+            }
 			
 		}
 	}
@@ -268,6 +357,7 @@ if (isset($display_template_name_plugin))
 	//Actions
 	add_action( 'wp_footer', array(&$display_template_name_plugin, 'displayTheTemplateName') );
 	add_action('admin_menu', 'DisplaYTemplateName_ap');
+    add_action('wp_head', array(&$display_template_name_plugin, 'custom_css_admin_bar' ));
 	add_action( 'admin_init', array(&$display_template_name_plugin, 'displayTplNameenqueue_my_styles') );
 	add_action( 'wp_before_admin_bar_render', array(&$display_template_name_plugin, 'displayTplNameAdminBar') );
 	// Filter
