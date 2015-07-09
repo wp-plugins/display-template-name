@@ -2,7 +2,7 @@
 Tags: developpement, template
 Requires at least: 3.0.0
 Tested up to: 4.1.1
-Stable tag: 1.6
+Stable tag: 1.7
 
 
 == Description ==
@@ -23,6 +23,9 @@ Displays the name of the template used by the currently displayed page in the ad
 2. Page display customization
 
 == Changelog ==
+
+= 1.7 =
+* Add sub template loaded by the get_template_part() wordpress function or include() php function.
 
 = 1.6 =
 * Add special capability
